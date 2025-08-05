@@ -1,0 +1,48 @@
+@startuml
+skinparam responseMessageBelowArrow true
+
+actor User
+participant "Browser" as B
+participant "LogoutFilter" as LF
+participant "SecurityContext" as SC
+participant "HttpSession" as HS
+participant "CookieJar" as CJ
+participant "OAuth2Service" as OAuth
+participant "LogoutSuccessHandler" as LSH
+
+User -> B: Click Logout
+B -> LF: POST /logout
+
+activate LF
+
+LF -> SC: Clear SecurityContextHolder
+activate SC
+SC --> LF: Context Cleared
+deactivate SC
+
+LF -> HS: Invalidate Session
+activate HS
+HS --> LF: Session Invalidated
+deactivate HS
+
+LF -> CJ: Delete Security Cookies
+activate CJ
+note right: JSESSIONID, CSRF token,\nRemember-me cookies
+CJ --> LF: Cookies Removed
+deactivate CJ
+
+LF -> OAuth: Revoke OAuth2 Tokens
+activate OAuth
+OAuth --> LF: Tokens Revoked
+deactivate OAuth
+
+LF -> LSH: Handle Successful Logout
+activate LSH
+LSH -> B: Redirect to "/"
+deactivate LSH
+
+deactivate LF
+
+B -> User: Show Homepage
+
+@enduml

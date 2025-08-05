@@ -4,9 +4,7 @@ spring:
       client:
         registration:
           github:
-            client-id: your-github-client-id
-            client-secret: your-github-client-secret
-
-#logging:
-#  level:
-#    org.springframework.security: DEBUG
+            client-id: Ov23liupgIX33aYS9SCd
+            client-secret: 4c7fa7e17e0fe51a22f7f0ec43bbe1df5ffa2c1b
+server:
+  port: 9090
